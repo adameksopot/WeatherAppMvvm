@@ -10,5 +10,5 @@ data class WeatherHourlyResponse(
     @SerializedName("pressure_msl") val pressures: List<Double>,
     @SerializedName("windspeed_10m") val windSpeeds: List<Double>,
     @SerializedName("relativehumidity_2m") val humidities: List<Double>,
-) : Serializable
+)
 

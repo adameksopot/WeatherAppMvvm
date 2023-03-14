@@ -5,6 +5,6 @@ import java.io.Serializable
 
 data class WeatherResponse(
     @SerializedName("hourly") val weatherData: WeatherHourlyResponse
-) : Serializable
+) 
 
 
