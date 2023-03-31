@@ -11,13 +11,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.weatherappmvvm.presentation.ui.WeatherCard
-import com.example.weatherappmvvm.presentation.ui.weatherForecast
+import com.example.weatherappmvvm.presentation.ui.WeatherForecast
 import com.example.weatherappmvvm.presentation.viewmodels.WeatherViewModel
 import com.example.weatherappmvvm.ui.theme.DarkBlue
 import com.example.weatherappmvvm.ui.theme.DeepBlue
@@ -37,43 +38,49 @@ class MainActivity : ComponentActivity() {
         ) {
             viewModel.loadWeatherInfo()
         }
-        permissionLauncher.launch(arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        ))
+        permissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+            )
+        )
         setContent {
             WeatherAppMvvmTheme {
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(DeepBlue)
-                    ) {
-                        WeatherCard(
-                            state = viewModel.state,
-                            backgroundColor = DarkBlue
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        weatherForecast(state = viewModel.state, backgroundColor = DeepBlue)
-                    }
-                    if(viewModel.state.isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                    viewModel.state.error?.let { error ->
-                        Text(
-                            text = error,
-                            color = Color.Red,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                }
+                myApp(viewModel)
             }
         }
     }
 }
 
+@Composable
+fun myApp(viewModel: WeatherViewModel) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DeepBlue)
+        ) {
+            WeatherCard(
+                state = viewModel.state,
+                backgroundColor = DarkBlue
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            WeatherForecast(state = viewModel.state, backgroundColor = DarkBlue)
+        }
+        if (viewModel.state.isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+        viewModel.state.error?.let { error ->
+            Text(
+                text = error,
+                color = Color.Red,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
+}
