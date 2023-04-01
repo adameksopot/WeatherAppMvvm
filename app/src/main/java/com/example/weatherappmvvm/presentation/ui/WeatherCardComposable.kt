@@ -1,6 +1,7 @@
 package com.example.weatherappmvvm.presentation.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -22,11 +23,16 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun WeatherCard(
     state: WeatherState,
+    onCardPressed: () -> Unit,
     backgroundColor: Color,
     modifier: Modifier = Modifier
 ) {
     state.data?.currentWeatherData?.let { data ->
-        Card(backgroundColor = backgroundColor, shape = RoundedCornerShape(10.dp), modifier = modifier.padding(16.dp)) {
+        Card(
+            backgroundColor = backgroundColor,
+            shape = RoundedCornerShape(10.dp),
+            modifier = modifier.padding(16.dp).then(modifier.clickable { onCardPressed() })
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth().padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
