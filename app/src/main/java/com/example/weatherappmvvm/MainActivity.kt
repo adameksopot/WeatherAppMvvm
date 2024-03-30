@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.weatherappmvvm.presentation.ui.*
 import com.example.weatherappmvvm.presentation.viewmodels.WeatherViewModel
-import com.example.weatherappmvvm.ui.theme.DarkBlue
-import com.example.weatherappmvvm.ui.theme.DeepBlue
+import com.example.weatherappmvvm.ui.theme.DarkSilver
+import com.example.weatherappmvvm.ui.theme.Silver
 import com.example.weatherappmvvm.ui.theme.WeatherAppMvvmTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -58,13 +58,13 @@ class MainActivity : ComponentActivity() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(DeepBlue)
+                    .background(Silver)
             ) {
                 WeatherCard(
-                    state = viewModel.state, backgroundColor = DarkBlue
+                    state = viewModel.state, backgroundColor = DarkSilver
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                WeatherForecast(state = viewModel.state, backgroundColor = DarkBlue)
+                WeatherForecast(state = viewModel.state, backgroundColor = DarkSilver)
             }
             if (viewModel.state.isLoading) {
                 CircularProgressIndicator(
