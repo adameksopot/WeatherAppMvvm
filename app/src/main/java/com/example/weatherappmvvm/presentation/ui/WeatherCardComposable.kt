@@ -23,7 +23,6 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun WeatherCard(
     state: WeatherState,
-    onCardPressed: () -> Unit,
     backgroundColor: Color,
     modifier: Modifier = Modifier
 ) {
@@ -31,7 +30,7 @@ fun WeatherCard(
         Card(
             backgroundColor = backgroundColor,
             shape = RoundedCornerShape(10.dp),
-            modifier = modifier.padding(16.dp).then(modifier.clickable { onCardPressed() })
+            modifier = modifier.padding(16.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth().padding(16.dp),

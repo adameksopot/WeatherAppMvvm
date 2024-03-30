@@ -17,10 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.weatherappmvvm.presentation.ui.*
 import com.example.weatherappmvvm.presentation.viewmodels.WeatherViewModel
 import com.example.weatherappmvvm.ui.theme.DarkBlue
@@ -49,66 +45,40 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             WeatherAppMvvmTheme {
-                MyApp(viewModel)
+                OverviewComposable(viewModel = viewModel)
             }
         }
     }
 
     @Composable
-    private fun MyApp(viewModel: WeatherViewModel) {
-        val navController = rememberNavController()
-
-        NavHost(
-            navController = navController,
-            startDestination = WeatherOverview.route,
-        )
-        {
-            composable(WeatherOverview.route) {
-                OverviewComposable(
-                    viewModel,
-                    onCardClick = { navController.navigateSingleTopTo(WeatherDetailsPerDay.route) })
-            }
-
-            composable(WeatherDetailsPerDay.route) {
-                WeatherDetails { navController.popBackStack() }
-            }
-        }
-    }
-}
-
-@Composable
-fun OverviewComposable(viewModel: WeatherViewModel, onCardClick : () -> Unit) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(DeepBlue)
+    fun OverviewComposable(viewModel: WeatherViewModel) {
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            WeatherCard(
-                state = viewModel.state,
-                onCardPressed = onCardClick,
-                backgroundColor = DarkBlue
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            WeatherForecast(state = viewModel.state, backgroundColor = DarkBlue)
-        }
-        if (viewModel.state.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-        viewModel.state.error?.let { error ->
-            Text(
-                text = error,
-                color = Color.Red,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.align(Alignment.Center)
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(DeepBlue)
+            ) {
+                WeatherCard(
+                    state = viewModel.state, backgroundColor = DarkBlue
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                WeatherForecast(state = viewModel.state, backgroundColor = DarkBlue)
+            }
+            if (viewModel.state.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+            viewModel.state.error?.let { error ->
+                Text(
+                    text = error,
+                    color = Color.Red,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
         }
     }
 }
-
-fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route) { launchSingleTop = true }

@@ -8,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,7 +26,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun WeatherForecast(state: WeatherState, modifier: Modifier = Modifier, backgroundColor: Color) {
     state.data?.weatherDataForADay?.get(0)?.let {
-        Text(modifier = Modifier.padding(start = 16.dp), text =
+        Text(
+            modifier = Modifier.padding(start = 16.dp), text =
             "Today", color = Color.LightGray, fontSize = 15.sp
         )
         Card(
@@ -32,11 +35,14 @@ fun WeatherForecast(state: WeatherState, modifier: Modifier = Modifier, backgrou
             modifier = Modifier.padding(16.dp), shape = RoundedCornerShape(10.dp)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
 
                 ) {
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     items(items = it, itemContent = { SingleForecast(it, modifier) })
+                    item { Button({}) {} }
                 }
             }
         }
@@ -45,7 +51,7 @@ fun WeatherForecast(state: WeatherState, modifier: Modifier = Modifier, backgrou
 
 @Composable
 fun SingleForecast(
-    weatherData: WeatherData ,
+    weatherData: WeatherData,
     modifier: Modifier = Modifier,
     textColor: Color = Color.White
 ) {
@@ -67,7 +73,9 @@ fun SingleForecast(
             contentScale = ContentScale.Inside,
             painter = painterResource(id = weatherData.weatherType.iconRes),
             contentDescription = null,
-            modifier = Modifier.width(40.dp).height(40.dp)
+            modifier = Modifier
+                .width(40.dp)
+                .height(40.dp)
         )
         Text(
             text = "${weatherData.tempC}°C",
